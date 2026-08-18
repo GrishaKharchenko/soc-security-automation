@@ -38,7 +38,7 @@ def disabled_cache(tmp_path) -> ResponseCache:
 
 @pytest.fixture
 def domain_ioc() -> IOC:
-    return IOC(value="malware-c2.test", type=IOCType.DOMAIN, raw="malware-c2.test")
+    return IOC(value="malware-c2.example.com", type=IOCType.DOMAIN, raw="malware-c2.example.com")
 
 
 @pytest.fixture
@@ -46,7 +46,7 @@ def vt_payload() -> dict:
     """Урезанный, но структурно достоверный ответ VirusTotal API v3."""
     return {
         "data": {
-            "id": "malware-c2.test",
+            "id": "malware-c2.example.com",
             "type": "domain",
             "attributes": {
                 "last_analysis_stats": {

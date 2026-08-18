@@ -21,7 +21,7 @@ def feed(tmp_path):
     path = tmp_path / "feed.txt"
     path.write_text(
         "# тестовый фид\n"
-        "malware-c2.test\n"
+        "malware-c2.example.com\n"
         "example.com\n"
         "192.0.2.1\n"
         "EXAMPLE.COM\n"          # дубликат -> схлопнется
@@ -43,7 +43,7 @@ def _payload(malicious: int, harmless: int = 70):
 
 def test_full_pipeline_with_mocked_api(settings, feed, disabled_cache):
     with requests_mock.Mocker() as api:
-        api.get("https://vt.test/api/v3/domains/malware-c2.test",
+        api.get("https://vt.test/api/v3/domains/malware-c2.example.com",
                 json=_payload(malicious=40))
         api.get("https://vt.test/api/v3/domains/example.com", json=_payload(0))
         api.get("https://vt.test/api/v3/ip_addresses/192.0.2.1", status_code=404)
@@ -53,7 +53,7 @@ def test_full_pipeline_with_mocked_api(settings, feed, disabled_cache):
         run = IOCAnalyzer(settings, provider=client).analyze_file(feed)
 
     verdicts = {r.ioc.value: r.verdict for r in run.results}
-    assert verdicts["malware-c2.test"] is Verdict.MALICIOUS
+    assert verdicts["malware-c2.example.com"] is Verdict.MALICIOUS
     assert verdicts["example.com"] is Verdict.CLEAN
     assert verdicts["192.0.2.1"] is Verdict.UNKNOWN     # 404 != clean
     assert len(run.results) == 3                        # дубликат схлопнулся
@@ -64,7 +64,7 @@ def test_full_pipeline_with_mocked_api(settings, feed, disabled_cache):
 def test_one_broken_ioc_does_not_stop_the_run(settings, feed, disabled_cache):
     """Таймаут на одном индикаторе не должен ронять прогон из сотен."""
     with requests_mock.Mocker() as api:
-        api.get("https://vt.test/api/v3/domains/malware-c2.test",
+        api.get("https://vt.test/api/v3/domains/malware-c2.example.com",
                 exc=requests.exceptions.ConnectTimeout)
         api.get("https://vt.test/api/v3/domains/example.com", json=_payload(0))
         api.get("https://vt.test/api/v3/ip_addresses/192.0.2.1", json=_payload(0))
@@ -74,7 +74,7 @@ def test_one_broken_ioc_does_not_stop_the_run(settings, feed, disabled_cache):
         run = IOCAnalyzer(settings, provider=client).analyze_file(feed)
 
     verdicts = {r.ioc.value: r.verdict for r in run.results}
-    assert verdicts["malware-c2.test"] is Verdict.ERROR
+    assert verdicts["malware-c2.example.com"] is Verdict.ERROR
     assert verdicts["example.com"] is Verdict.CLEAN     # остальные обработаны
     assert len(run.results) == 3
 
@@ -100,7 +100,7 @@ def test_limit_caps_api_usage(settings, feed):
 
 def test_exit_code_reflects_findings(settings, feed, disabled_cache):
     with requests_mock.Mocker() as api:
-        api.get("https://vt.test/api/v3/domains/malware-c2.test", json=_payload(40))
+        api.get("https://vt.test/api/v3/domains/malware-c2.example.com", json=_payload(40))
         api.get("https://vt.test/api/v3/domains/example.com", json=_payload(0))
         api.get("https://vt.test/api/v3/ip_addresses/192.0.2.1", json=_payload(0))
         client = VirusTotalClient(settings, session=requests.Session(),
@@ -170,7 +170,7 @@ def test_cli_classify_lists_iocs(feed, tmp_path, capsys):
                  "--env-file", str(tmp_path / "нет.env")])
     out = capsys.readouterr().out
     assert code == EXIT_OK
-    assert "malware-c2.test" in out
+    assert "malware-c2.example.com" in out
     assert "Всего уникальных: 3" in out
 
 

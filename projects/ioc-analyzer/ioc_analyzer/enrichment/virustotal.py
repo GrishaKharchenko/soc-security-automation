@@ -22,6 +22,7 @@ import requests
 
 from ..config import Settings
 from ..logging_setup import get_logger
+from ..ioc.scope import check_enrichable
 from ..models import IOC, EnrichmentResult, EnrichmentStatus, IOCType
 from .base import EnrichmentProvider
 from .cache import ResponseCache
@@ -82,6 +83,27 @@ class VirusTotalClient(EnrichmentProvider):
         ``base64.urlsafe_b64encode(url).strip('=')``.
         """
         return base64.urlsafe_b64encode(url.encode("utf-8")).decode("ascii").rstrip("=")
+
+    def _cache_key(self, ioc_type: IOCType, value: str) -> str:
+        return f"{self.name}:{ioc_type.value}:{value}"
+
+    @staticmethod
+    def _file_hash_keys(payload: dict[str, Any]) -> list[tuple[IOCType, str]]:
+        """Все хеши файла из ответа VT.
+
+        VirusTotal резолвит MD5, SHA1 и SHA256 одного файла в один объект и
+        возвращает все три в ``attributes``. Живой прогон показал, что фид с
+        MD5 и SHA256 одного и того же образца тратит два запроса вместо одного.
+        Раскладывая ответ в кеш под все три ключа, второй хеш мы отдаём уже
+        бесплатно — на больших фидах это заметная экономия суточной квоты.
+        """
+        attributes = (payload.get("data") or {}).get("attributes") or {}
+        pairs = [
+            (IOCType.MD5, attributes.get("md5")),
+            (IOCType.SHA1, attributes.get("sha1")),
+            (IOCType.SHA256, attributes.get("sha256")),
+        ]
+        return [(t, v.lower()) for t, v in pairs if isinstance(v, str) and v]
 
     def _object_id(self, ioc: IOC) -> str:
         if ioc.type is IOCType.URL:
@@ -160,8 +182,17 @@ class VirusTotalClient(EnrichmentProvider):
                 if status_code in _RETRYABLE_STATUS:
                     last_status = EnrichmentStatus.API_ERROR
                     last_error = f"временная ошибка VirusTotal: HTTP {status_code}"
+                elif status_code in (400, 422):
+                    # Провайдер отверг сам индикатор: "not a valid domain
+                    # pattern", некорректный формат хеша и т.п. Это НЕ сбой —
+                    # ни повтор, ни ручная проверка аналитиком ничего не дадут,
+                    # поэтому статус UNSUPPORTED, а не API_ERROR.
+                    detail = self._error_message(response)
+                    logger.debug("VT не принимает индикатор (HTTP %d): %s",
+                                 status_code, detail)
+                    return None, EnrichmentStatus.UNSUPPORTED, detail
                 else:
-                    # 400, 422 и прочее: запрос некорректен, повтор не поможет.
+                    # Прочие неожиданные коды: повтор не поможет.
                     detail = self._error_message(response)
                     return None, EnrichmentStatus.API_ERROR, f"HTTP {status_code}: {detail}"
 
@@ -282,7 +313,15 @@ class VirusTotalClient(EnrichmentProvider):
             logger.debug("Тип %s не поддерживается VirusTotal", ioc.type.value)
             return self.unsupported(f"VirusTotal не работает с типом {ioc.type.value}")
 
-        cache_key = f"{self.name}:{ioc.type.value}:{ioc.value}"
+        # Индикаторы, которые провайдер не может проверить в принципе
+        # (зарезервированные зоны DNS, приватные адреса), отсекаем до запроса:
+        # это экономит квоту и не засоряет отчёт бесполезными ошибками.
+        skip_reason = check_enrichable(ioc)
+        if skip_reason is not None:
+            logger.info("Пропускаю %s (%s): %s", ioc.value, ioc.type.value, skip_reason)
+            return self.unsupported(skip_reason)
+
+        cache_key = self._cache_key(ioc.type, ioc.value)
         cached = self.cache.get(cache_key)
         if cached is not None:
             logger.info("Из кеша: %s (%s)", ioc.value, ioc.type.value)
@@ -292,6 +331,11 @@ class VirusTotalClient(EnrichmentProvider):
 
         if status is EnrichmentStatus.OK and payload is not None:
             self.cache.set(cache_key, payload)
+            if ioc.type.is_hash:
+                # Тот же файл под остальными своими хешами — следующий запрос
+                # по любому из них уйдёт в кеш, а не в API.
+                for hash_type, hash_value in self._file_hash_keys(payload):
+                    self.cache.set(self._cache_key(hash_type, hash_value), payload)
             result = self._parse(payload, ioc, from_cache=False)
             logger.info("VT: %s (%s) -> детекты %s, репутация %d",
                         ioc.value, ioc.type.value, result.detection_ratio, result.reputation)
