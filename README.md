@@ -77,8 +77,15 @@ python -m pytest
 python -m ioc_analyzer classify -i data/sample_iocs.txt
 ```
 
-Подробные инструкции — в README каждого проекта. Сводная инструкция по
-локальному запуску всего набора: [`docs/LOCAL_SETUP.md`](docs/LOCAL_SETUP.md).
+### Документация
+
+| Документ | Содержание |
+|---|---|
+| README каждого проекта | архитектура, примеры, вопросы по этому инструменту |
+| [`docs/LOCAL_SETUP.md`](docs/LOCAL_SETUP.md) | запуск набора на своей машине: Windows, Linux, macOS |
+| [`docs/CODE_WALKTHROUGH.md`](docs/CODE_WALKTHROUGH.md) | разбор кода: каждый модуль, каждая языковая конструкция, каждое решение |
+| [`docs/INTERVIEW.md`](docs/INTERVIEW.md) | сводная подготовка к собеседованию и проверка готовности |
+| [`docs/VERIFICATION.md`](docs/VERIFICATION.md) | план проверки, результаты прогона и найденные ошибки |
 
 ---
 
@@ -89,6 +96,8 @@ soc-security-automation/
 ├── README.md                  это оглавление
 ├── docs/
 │   ├── LOCAL_SETUP.md         запуск всего набора на своей машине
+│   ├── CODE_WALKTHROUGH.md    разбор кода: каждый модуль и каждая конструкция
+│   ├── INTERVIEW.md           подготовка к собеседованию по всему набору
 │   └── VERIFICATION.md        план проверки и результаты прогона
 └── projects/
     ├── ioc-analyzer/          каждый инструмент — самодостаточный проект
