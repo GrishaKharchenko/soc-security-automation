@@ -86,7 +86,7 @@ projects/log-analyzer/
 │   │   └── engine.py             запуск правил и корреляция
 │   └── reporting/writers.py      JSON, CSV, консольная сводка
 ├── data/generate_samples.py      генератор безопасных тестовых логов
-├── tests/                        91 тест
+├── tests/                        93 теста
 └── README.md
 ```
 
@@ -307,7 +307,7 @@ jsmith». Исправлено: находки с множеством сущн�
 ## Тесты
 
 ```bash
-python -m pytest              # 91 тест
+python -m pytest              # 93 теста
 python -m pytest -v
 ```
 
