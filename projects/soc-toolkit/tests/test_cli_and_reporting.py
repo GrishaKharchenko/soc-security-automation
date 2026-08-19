@@ -198,3 +198,16 @@ def test_missing_log_file_is_usage_error(tmp_path, capsys):
     code = main(["logs", "-i", str(tmp_path / "нет.log"), "-q",
                  "--env-file", str(tmp_path / "нет.env")])
     assert code == EXIT_USAGE
+
+
+def test_bad_argument_exits_with_usage_code():
+    """Код 2 означает критические находки — ошибка в аргументах даёт 3."""
+    with pytest.raises(SystemExit) as exit_info:
+        main(["logs", "-i", "x.log", "--parser", "чепуха"])
+    assert exit_info.value.code == EXIT_USAGE
+
+
+def test_missing_required_argument_exits_with_usage_code():
+    with pytest.raises(SystemExit) as exit_info:
+        main(["ioc"])
+    assert exit_info.value.code == EXIT_USAGE

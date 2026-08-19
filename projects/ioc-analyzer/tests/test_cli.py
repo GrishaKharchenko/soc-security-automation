@@ -187,3 +187,21 @@ def test_cli_flags_override_env(feed, tmp_path, monkeypatch):
 def test_cli_rejects_unknown_type(feed, tmp_path):
     with pytest.raises(SystemExit):
         main(["analyze", "-i", str(feed), "--types", "непонятный-тип"])
+
+
+def test_bad_argument_exits_with_usage_code(feed, tmp_path):
+    """Ошибка в аргументах не должна маскироваться под результат анализа.
+
+    argparse по умолчанию завершает процесс кодом 2, а код 2 в контракте
+    инструмента означает «часть индикаторов проверить не удалось». Пайплайн,
+    проверяющий $? -eq 2, принял бы опечатку в команде за результат.
+    """
+    with pytest.raises(SystemExit) as exit_info:
+        main(["analyze", "-i", str(feed), "--types", "чепуха"])
+    assert exit_info.value.code == EXIT_USAGE
+
+
+def test_missing_required_argument_exits_with_usage_code():
+    with pytest.raises(SystemExit) as exit_info:
+        main(["analyze"])
+    assert exit_info.value.code == EXIT_USAGE

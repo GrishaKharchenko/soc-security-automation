@@ -196,3 +196,17 @@ def test_multiple_files_are_merged(tmp_path, log_file):
     assert len(events) == 8
     assert events == sorted(events, key=lambda e: e.timestamp)
     assert {e.platform.value for e in events} == {"linux", "windows"}
+
+
+def test_bad_argument_exits_with_usage_code(log_file):
+    """Код 2 занят под «есть критические находки», поэтому ошибка в
+    аргументах обязана давать 3, а не 2."""
+    with pytest.raises(SystemExit) as exit_info:
+        main(["analyze", "-i", str(log_file), "--parser", "чепуха"])
+    assert exit_info.value.code == EXIT_USAGE
+
+
+def test_unknown_subcommand_exits_with_usage_code():
+    with pytest.raises(SystemExit) as exit_info:
+        main(["чепуха"])
+    assert exit_info.value.code == EXIT_USAGE

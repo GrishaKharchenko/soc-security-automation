@@ -35,8 +35,23 @@ EXIT_ERRORS = 2
 EXIT_USAGE = 3
 
 
+class _ArgumentParser(argparse.ArgumentParser):
+    """argparse при ошибке в аргументах завершает процесс кодом 2.
+
+    В контракте этого инструмента код 2 занят и означает содержательный
+    результат (часть индикаторов проверить не удалось). Опечатка в команде, отдающая тот же код, заставит
+    пайплайн принять её за результат анализа. Поэтому ошибки разбора
+    аргументов переводятся в код EXIT_USAGE, отведённый под проблемы запуска.
+    """
+
+    def error(self, message: str) -> None:  # noqa: D401
+        self.print_usage(sys.stderr)
+        self.exit(EXIT_USAGE, f"{self.prog}: ошибка: {message}\n")
+
+
+
 def build_parser() -> argparse.ArgumentParser:
-    parser = argparse.ArgumentParser(
+    parser = _ArgumentParser(
         prog="ioc-analyzer",
         description="Автоматизированный анализ индикаторов компрометации (SOC).",
         formatter_class=argparse.RawDescriptionHelpFormatter,
