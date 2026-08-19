@@ -1,0 +1,92 @@
+# Синтетический auth.log для SOC Log Analyzer.
+# Адреса — из документационных диапазонов RFC 5737, имена вымышлены.
+# Реальных систем и вредоносной активности здесь нет.
+Aug 17 09:10:00 web01 sshd[2000]: Accepted publickey for alice from 198.51.100.10 port 40000 ssh2: RSA SHA256:AAAA0BBBB
+Aug 17 09:10:05 web01 systemd-logind[500]: New session 3 of user alice.
+Aug 17 09:25:00 web01 sshd[2001]: Accepted publickey for bob from 198.51.100.11 port 40001 ssh2: RSA SHA256:AAAA1BBBB
+Aug 17 09:25:05 web01 systemd-logind[500]: New session 4 of user bob.
+Aug 17 09:40:00 web01 sshd[2002]: Accepted publickey for carol from 198.51.100.12 port 40002 ssh2: RSA SHA256:AAAA2BBBB
+Aug 17 09:40:05 web01 systemd-logind[500]: New session 5 of user carol.
+Aug 17 09:50:00 web01 CRON[9001]: pam_unix(cron:session): session opened for user root by (uid=0)
+Aug 17 09:51:00 web01 systemd[1]: Started Daily apt download activities.
+Aug 17 09:52:00 web01 sshd[9100]: Server listening on 0.0.0.0 port 22.
+Aug 17 09:55:00 web01 sshd[2003]: Accepted publickey for dmitry from 198.51.100.10 port 40003 ssh2: RSA SHA256:AAAA3BBBB
+Aug 17 09:55:05 web01 systemd-logind[500]: New session 6 of user dmitry.
+Aug 17 10:10:00 web01 sshd[2004]: Accepted publickey for elena from 198.51.100.11 port 40004 ssh2: RSA SHA256:AAAA4BBBB
+Aug 17 10:10:05 web01 systemd-logind[500]: New session 7 of user elena.
+Aug 17 10:30:00 web01 sshd[2100]: Failed password for carol from 198.51.100.12 port 41000 ssh2
+Aug 17 10:30:20 web01 sshd[2101]: Failed password for carol from 198.51.100.12 port 41001 ssh2
+Aug 17 10:30:40 web01 sshd[2102]: Failed password for carol from 198.51.100.12 port 41002 ssh2
+Aug 17 10:31:40 web01 sshd[2110]: Accepted password for carol from 198.51.100.12 port 41100 ssh2
+Aug 17 11:30:00 web01 sshd[3000]: Invalid user oracle from 192.0.2.88 port 50000
+Aug 17 11:30:01 web01 sshd[3000]: Failed password for invalid user oracle from 192.0.2.88 port 50000 ssh2
+Aug 17 11:30:12 web01 sshd[3001]: Invalid user test from 192.0.2.88 port 50001
+Aug 17 11:30:13 web01 sshd[3001]: Failed password for invalid user test from 192.0.2.88 port 50001 ssh2
+Aug 17 11:30:24 web01 sshd[3002]: Invalid user guest from 192.0.2.88 port 50002
+Aug 17 11:30:25 web01 sshd[3002]: Failed password for invalid user guest from 192.0.2.88 port 50002 ssh2
+Aug 17 11:30:36 web01 sshd[3003]: Invalid user ftpuser from 192.0.2.88 port 50003
+Aug 17 11:30:37 web01 sshd[3003]: Failed password for invalid user ftpuser from 192.0.2.88 port 50003 ssh2
+Aug 17 11:30:48 web01 sshd[3004]: Invalid user mysql from 192.0.2.88 port 50004
+Aug 17 11:30:49 web01 sshd[3004]: Failed password for invalid user mysql from 192.0.2.88 port 50004 ssh2
+Aug 17 11:31:00 web01 sshd[3005]: Invalid user ubuntu from 192.0.2.88 port 50005
+Aug 17 11:31:01 web01 sshd[3005]: Failed password for invalid user ubuntu from 192.0.2.88 port 50005 ssh2
+Aug 17 11:31:12 web01 sshd[3006]: Invalid user pi from 192.0.2.88 port 50006
+Aug 17 11:31:13 web01 sshd[3006]: Failed password for invalid user pi from 192.0.2.88 port 50006 ssh2
+Aug 17 11:31:24 web01 sshd[3007]: Invalid user git from 192.0.2.88 port 50007
+Aug 17 11:31:25 web01 sshd[3007]: Failed password for invalid user git from 192.0.2.88 port 50007 ssh2
+Aug 17 12:20:00 web01 sshd[4000]: Failed password for root from 192.0.2.66 port 51000 ssh2
+Aug 17 12:20:08 web01 sshd[4001]: Failed password for root from 192.0.2.66 port 51001 ssh2
+Aug 17 12:20:16 web01 sshd[4002]: Failed password for root from 192.0.2.66 port 51002 ssh2
+Aug 17 12:20:24 web01 sshd[4003]: Failed password for root from 192.0.2.66 port 51003 ssh2
+Aug 17 12:20:32 web01 sshd[4004]: Failed password for root from 192.0.2.66 port 51004 ssh2
+Aug 17 12:20:40 web01 sshd[4005]: Failed password for root from 192.0.2.66 port 51005 ssh2
+Aug 17 12:20:48 web01 sshd[4006]: Failed password for root from 192.0.2.66 port 51006 ssh2
+Aug 17 12:20:56 web01 sshd[4007]: Failed password for root from 192.0.2.66 port 51007 ssh2
+Aug 17 12:21:04 web01 sshd[4008]: Failed password for root from 192.0.2.66 port 51008 ssh2
+Aug 17 12:21:12 web01 sshd[4009]: Failed password for root from 192.0.2.66 port 51009 ssh2
+Aug 17 12:21:20 web01 sshd[4010]: Failed password for root from 192.0.2.66 port 51010 ssh2
+Aug 17 12:21:28 web01 sshd[4011]: Failed password for root from 192.0.2.66 port 51011 ssh2
+Aug 17 12:21:36 web01 sshd[4012]: Failed password for root from 192.0.2.66 port 51012 ssh2
+Aug 17 12:21:44 web01 sshd[4013]: Failed password for root from 192.0.2.66 port 51013 ssh2
+Aug 17 12:21:52 web01 sshd[4014]: Failed password for root from 192.0.2.66 port 51014 ssh2
+Aug 17 12:22:00 web01 sshd[4015]: Failed password for root from 192.0.2.66 port 51015 ssh2
+Aug 17 12:22:08 web01 sshd[4016]: Failed password for root from 192.0.2.66 port 51016 ssh2
+Aug 17 12:22:16 web01 sshd[4017]: Failed password for root from 192.0.2.66 port 51017 ssh2
+Aug 17 14:33:20 web01 sshd[5000]: Failed password for alice from 192.0.2.77 port 52000 ssh2
+Aug 17 14:33:26 web01 sshd[5000]: Failed password for alice from 192.0.2.77 port 52000 ssh2
+Aug 17 14:34:00 web01 sshd[5001]: Failed password for bob from 192.0.2.77 port 52001 ssh2
+Aug 17 14:34:06 web01 sshd[5001]: Failed password for bob from 192.0.2.77 port 52001 ssh2
+Aug 17 14:34:40 web01 sshd[5002]: Failed password for carol from 192.0.2.77 port 52002 ssh2
+Aug 17 14:34:46 web01 sshd[5002]: Failed password for carol from 192.0.2.77 port 52002 ssh2
+Aug 17 14:35:20 web01 sshd[5003]: Failed password for dmitry from 192.0.2.77 port 52003 ssh2
+Aug 17 14:35:26 web01 sshd[5003]: Failed password for dmitry from 192.0.2.77 port 52003 ssh2
+Aug 17 14:36:00 web01 sshd[5004]: Failed password for elena from 192.0.2.77 port 52004 ssh2
+Aug 17 14:36:06 web01 sshd[5004]: Failed password for elena from 192.0.2.77 port 52004 ssh2
+Aug 17 14:36:40 web01 sshd[5005]: Failed password for finance from 192.0.2.77 port 52005 ssh2
+Aug 17 14:36:46 web01 sshd[5005]: Failed password for finance from 192.0.2.77 port 52005 ssh2
+Aug 17 14:37:20 web01 sshd[5006]: Failed password for backup from 192.0.2.77 port 52006 ssh2
+Aug 17 14:37:26 web01 sshd[5006]: Failed password for backup from 192.0.2.77 port 52006 ssh2
+Aug 17 14:38:00 web01 sshd[5007]: Failed password for jenkins from 192.0.2.77 port 52007 ssh2
+Aug 17 14:38:06 web01 sshd[5007]: Failed password for jenkins from 192.0.2.77 port 52007 ssh2
+Aug 17 14:38:40 web01 sshd[5008]: Failed password for postgres from 192.0.2.77 port 52008 ssh2
+Aug 17 14:38:46 web01 sshd[5008]: Failed password for postgres from 192.0.2.77 port 52008 ssh2
+Aug 17 14:39:20 web01 sshd[5009]: Failed password for webadmin from 192.0.2.77 port 52009 ssh2
+Aug 17 14:39:26 web01 sshd[5009]: Failed password for webadmin from 192.0.2.77 port 52009 ssh2
+Aug 17 14:41:40 web01 sshd[5100]: Accepted password for backup from 192.0.2.77 port 52500 ssh2
+Aug 17 14:43:20 web01 sudo: backup : 1 incorrect password attempts ; TTY=pts/2 ; PWD=/home/backup ; USER=root ; COMMAND=/bin/bash
+Aug 17 14:43:50 web01 sudo: backup : 2 incorrect password attempts ; TTY=pts/2 ; PWD=/home/backup ; USER=root ; COMMAND=/bin/bash
+Aug 17 14:44:20 web01 sudo: backup : 3 incorrect password attempts ; TTY=pts/2 ; PWD=/home/backup ; USER=root ; COMMAND=/bin/bash
+Aug 17 14:44:50 web01 sudo: backup : 4 incorrect password attempts ; TTY=pts/2 ; PWD=/home/backup ; USER=root ; COMMAND=/bin/bash
+Aug 17 14:46:40 web01 sudo: backup : user NOT in sudoers ; TTY=pts/2 ; PWD=/home/backup ; USER=root ; COMMAND=/usr/bin/id
+Aug 17 16:13:20 web01 sshd[6000]: Failed password for admin from 203.0.113.11 port 53000 ssh2
+Aug 17 16:13:35 web01 sshd[6000]: Failed password for admin from 203.0.113.11 port 53000 ssh2
+Aug 17 16:14:50 web01 sshd[6001]: Failed password for admin from 203.0.113.12 port 53001 ssh2
+Aug 17 16:15:05 web01 sshd[6001]: Failed password for admin from 203.0.113.12 port 53001 ssh2
+Aug 17 16:16:20 web01 sshd[6002]: Failed password for admin from 203.0.113.13 port 53002 ssh2
+Aug 17 16:16:35 web01 sshd[6002]: Failed password for admin from 203.0.113.13 port 53002 ssh2
+Aug 17 16:17:50 web01 sshd[6003]: Failed password for admin from 203.0.113.14 port 53003 ssh2
+Aug 17 16:18:05 web01 sshd[6003]: Failed password for admin from 203.0.113.14 port 53003 ssh2
+Aug 17 16:19:20 web01 sshd[6004]: Failed password for admin from 203.0.113.15 port 53004 ssh2
+Aug 17 16:19:35 web01 sshd[6004]: Failed password for admin from 203.0.113.15 port 53004 ssh2
+Aug 18 02:00:00 web01 sshd[7000]: Accepted password for dmitry from 203.0.113.200 port 54000 ssh2
+Aug 18 02:02:00 web01 sudo: dmitry : TTY=pts/3 ; PWD=/home/dmitry ; USER=root ; COMMAND=/usr/bin/apt update
